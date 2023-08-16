@@ -83,6 +83,9 @@ const connectionSchema = new mongoose.Schema(
 //   await redisClient.connect();
 // })();
 
+app.get("/",(req,res)=>{
+  res.send("Server is running")
+})
 app.get("/connection",verifyToken,(req,res)=>{
   Connection.find({}).then((data)=>{
     res.send({result:data,alert:true});
