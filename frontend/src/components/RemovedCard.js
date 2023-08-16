@@ -2,7 +2,7 @@ import React from 'react'
 
 function RemovedCard(props) {
   
-    console.log(props,"card data");
+  
 
     function handleClick(){
         const data={

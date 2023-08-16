@@ -3,7 +3,7 @@ import logo from "../assets/demo.png"
 
 function Connectioncard(props) {
 
-    console.log(props,"card data");
+  
 
     function handleClick(){
         const data={

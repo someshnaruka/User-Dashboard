@@ -25,7 +25,7 @@ function SignIn() {
 if(data.password===data.confirmpswd)
 {
     axios.post(process.env.REACT_APP_SERVER_DOMAIN +"/register",data).then((response)=>{
-        console.log(response.data,"singn in response");
+       
         if(response.data.alert)
         {
             setData({
@@ -56,10 +56,10 @@ else{
 
   }
    async function handleUpload(event) {
-    console.log(event.target.files[0]);
+    
     const imgurl= await ImgtoBase64(event.target.files[0])
     setImg(imgurl)
-    console.log(img);
+ 
 
     setData((prevValue)=>{
         return{
@@ -79,7 +79,7 @@ else{
             [name]:value
         }
     })
-    console.log(data);
+  
 
   }
   return (
@@ -212,6 +212,20 @@ else{
                 placeholder="Confirm Above Entered Password"
                 className=" w-full p-2 bg-blue-100 rounded-md"
               ></input>
+            </div>
+            <div className="w-full flex flex-col justify-between gap-3 items-center text-white ">
+              {" "}
+              <p className="text-lg md:text-xl">
+                {" "}
+                Already Registered?{" "}
+                <a
+                  href="/login"
+                  className="underline text-lg md:text-xl hover:text-black"
+                >
+                  {" "}
+                  Login
+                </a>{" "}
+              </p>
             </div>
             <div className="w-full flex flex-col justify-between gap-3 items-center">
             <button className="text-white px-3 py-1 rounded-md border-2 text-lg md:text-xl md:hover:scale-110 duration-200 md:hover:bg-white md:hover:text-black"> Sign Up</button>

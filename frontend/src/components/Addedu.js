@@ -40,7 +40,7 @@ function Addedu(props) {
             [name]: value,
           };
         });
-        console.log(newEdu);
+      
       }
   return (
    <>
@@ -56,6 +56,7 @@ function Addedu(props) {
             <input
               type="text"
               name="institute"
+              required
               value={newEdu.institute}
               className="text-black  md:w-3/4 w-full p-2 rounded-md"
               onChange={handleChange}
@@ -66,6 +67,7 @@ function Addedu(props) {
             <input
               type="text"
               name="degree"
+              required
               value={newEdu.degree}
               className="text-black md:w-3/4 w-full p-2 rounded-md"
               onChange={handleChange}
@@ -79,6 +81,7 @@ function Addedu(props) {
                 <input
                   type="date"
                   name="startDate"
+                  required
                   value={newEdu.startDate}
                   placeholder=""
                   className="text-black  w-full p-2 rounded-md"
@@ -93,6 +96,7 @@ function Addedu(props) {
                 <input
                   type="date"
                   name="endDate"
+                  required
                   value={newEdu.endDate}
                   placeholder=""
                   className="text-black  w-full p-2 rounded-md"

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 function Addexp(props) {
-    console.log(props.userData,"certficate data");
+   
   const [newCerti, setNewcerti] = useState(props.check ?{
     id:props.userData[0].id,
     skill: props.userData[0].skill,
@@ -35,7 +35,7 @@ function Addexp(props) {
               [name]: value,
             };
           });
-          console.log(newCerti);
+         
     
 
     
@@ -54,6 +54,7 @@ function Addexp(props) {
             <input
               type="text"
               name="skill"
+              required
               value={newCerti.skill}
               className="text-black  md:w-3/4 w-full p-2 rounded-md"
               onChange={handleChange}
@@ -64,6 +65,7 @@ function Addexp(props) {
             <input
               type="text"
               name="provider"
+              required
               value={newCerti.provider}
               className="text-black md:w-3/4 w-full p-2 rounded-md"
               onChange={handleChange}

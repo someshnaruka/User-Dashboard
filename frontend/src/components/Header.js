@@ -24,8 +24,8 @@ function Header(props) {
   function handleclick() {
     setShow(!show);
   }
-  console.log(show);
-  console.log(props, "user data");
+
+  
   return (
     <>
       {/* hamburger menu */}

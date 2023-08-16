@@ -10,20 +10,20 @@ const initialState = {
     initialState,
     reducers:{
         loginRedux:(state,action)=>{
-            console.log(action.payload,"payload login");
+           
             state.userList=[action.payload];
         },
         profileRedux:(state,action)=>{
-          console.log(action.payload);
+        
           state.userList[0].firstname=action.payload.firstname;
           state.userList[0].phone=action.payload.phone;
-          console.log(state);
+         
         },
         aboutRedux:(state,action)=>{
            state.userList[0].bio=action.payload.bio;
         },
         AddskillRedux:(state,action)=>{
-console.log(action.payload,"newskill");
+
         state.userList[0].skills.push(action.payload)
         },
         AddcertiRedux:(state,action)=>{
@@ -39,30 +39,30 @@ console.log(action.payload,"newskill");
           .push(action.payload)
         },
         editCertiRedux:(state,action)=>{
-          console.log(action.payload);
+        
             const cert=JSON.parse(JSON.stringify(state.userList[0].certification));
-            console.log(cert)
+          
           const index=cert
           .findIndex((post)=>post.id===action.payload.id);
-          console.log(index);
+        
           state.userList[0].certification[index].skill=action.payload.skill;
           state.userList[0].certification[index].provider=action.payload.provider;
 
         },
         deletecertiRedux:(state,action)=>{
           const cert=JSON.parse(JSON.stringify(state.userList[0].certification));
-          console.log(cert)
+     
         const index=cert
         .findIndex((post)=>post.id===action.payload.id);
-        console.log(index);
+     
         state.userList[0].certification.splice(index, 1);
         },
         editExpRedux:(state,action)=>{
           const cert=JSON.parse(JSON.stringify(state.userList[0].experience));
-            console.log(cert)
+        
           const index=cert
           .findIndex((post)=>post.id===action.payload.id);
-          console.log(index);
+        
 
           state.userList[0].experience[index].cName=action.payload.cName;
           state.userList[0].experience[index].title=action.payload.title;
@@ -75,18 +75,18 @@ console.log(action.payload,"newskill");
         },
         deleteExpRedux:(state,action)=>{
           const cert=JSON.parse(JSON.stringify(state.userList[0].experience));
-          console.log(cert)
+       
         const index=cert
         .findIndex((post)=>post.id===action.payload.id);
-        console.log(index);
+      
         state.userList[0].experience.splice(index, 1);
         },
         editEduRedux:(state,action)=>{
           const cert=JSON.parse(JSON.stringify(state.userList[0].education));
-            console.log(cert)
+           
           const index=cert
           .findIndex((post)=>post.id===action.payload.id);
-          console.log(index);
+         
           state.userList[0].education[index].institute=action.payload.institute;
           state.userList[0].education[index].degree=action.payload.degree;
           state.userList[0].education[index].startDate=action.payload.startDate;
@@ -95,10 +95,10 @@ console.log(action.payload,"newskill");
         },
         deleteEduRedux:(state,action)=>{
           const cert=JSON.parse(JSON.stringify(state.userList[0].education));
-          console.log(cert)
+        
         const index=cert
         .findIndex((post)=>post.id===action.payload.id);
-        console.log(index);
+        
         state.userList[0].education.splice(index, 1);
         },
         deleteSkillRedux:(state,action)=>{
@@ -122,10 +122,13 @@ console.log(action.payload,"newskill");
         AddRedux:(state,action)=>{
           state.connectionList[0].connection.push(action.payload);
           },
+          imageRedux:(state,action)=>{
+            state.userList[0].image=action.payload.image;
+          }
    }
 
 
   });
 
-  export const  {loginRedux,profileRedux,aboutRedux,AddskillRedux,AddcertiRedux,AddexpRedux,AddeduRedux,editCertiRedux,deletecertiRedux,editExpRedux,deleteExpRedux,editEduRedux,deleteEduRedux,deleteSkillRedux,connectionRedux,ConnRemoveRedux,ConnAddRedux,AddRedux,RemoveRedux}=userSlice.actions;
+  export const  {loginRedux,profileRedux,aboutRedux,AddskillRedux,AddcertiRedux,AddexpRedux,AddeduRedux,editCertiRedux,deletecertiRedux,editExpRedux,deleteExpRedux,editEduRedux,deleteEduRedux,deleteSkillRedux,connectionRedux,ConnRemoveRedux,ConnAddRedux,AddRedux,RemoveRedux,imageRedux}=userSlice.actions;
   export default userSlice.reducer;

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import UserProfile from "./UserProfile";
+import React, { useEffect, useState } from "react";
 import stars from "../assets/Stars.svg";
 import vector from "../assets/Vector.svg";
 import logo from "../assets/logo.svg";
@@ -20,6 +19,7 @@ import {
   editCertiRedux,
   editEduRedux,
   editExpRedux,
+  imageRedux,
   profileRedux,
 } from "../features/userSlice";
 import { IoIosAdd } from "react-icons/io";
@@ -63,23 +63,36 @@ function User(props) {
         [name]: value,
       };
     });
-    console.log(user, "user");
+ 
   }
   const [change, setChange] = useState([]);
 
   const token = localStorage.getItem("dashboardToken");
 
-  // function handlePhoto(){
-  //     axios.patch(process.env.REACT_APP_SERVER_DOMAIN + "/profileImg", imgValue, {
-  //         headers: {
-  //           Authorization: token,
-  //         },
-  //       }).then((response)=>{
-  //         console.log(response.data);
-  //       }).catch((err)=>{
-  //         console.log(err);
-  //       })
-  // }
+  useEffect(()=>{
+   
+    handlePhoto();
+
+  },[imgValue])
+
+  function handlePhoto(){
+      axios.patch(process.env.REACT_APP_SERVER_DOMAIN + "/profileImg", imgValue, {
+          headers: {
+            Authorization: token,
+          },
+        }).then((response)=>{
+          
+if(response.data.alert){
+ 
+  toast(response.data.message)
+  dispatch(imageRedux(response.data.result))
+}
+            
+      
+        }).catch((err)=>{
+          console.log(err);
+        })
+  }
 
   function handleAbout(event) {
     const { name, value } = event.target;
@@ -90,7 +103,7 @@ function User(props) {
         [name]: value,
       };
     });
-    console.log(about, "user");
+  
   }
 
   function handleUpdatebio() {
@@ -101,7 +114,7 @@ function User(props) {
         },
       })
       .then((response) => {
-        console.log(response.data);
+       
         if (response.data.alert) {
           toast(response.data.message);
           dispatch(aboutRedux(about));
@@ -130,7 +143,7 @@ function User(props) {
         }
       )
       .then((response) => {
-        console.log(response.data);
+      
         if (response.data.alert) {
           toast(response.data.message);
           dispatch(AddskillRedux(newskill));
@@ -146,7 +159,7 @@ function User(props) {
 
   function handleNewskill(event) {
     setNewskill(event.target.value);
-    console.log(newskill);
+   
   }
 
   function handleprofile() {
@@ -157,7 +170,7 @@ function User(props) {
         },
       })
       .then((response) => {
-        console.log(response.data);
+       
         if (response.data.alert) {
           toast(response.data.message);
           dispatch(profileRedux(user));
@@ -171,25 +184,29 @@ function User(props) {
 
   function handleEditData(value) {
     setChange([value]);
-    console.log(change, "change value");
+    
   }
 
   function handleEdit(value) {
     setEdit(value);
   }
   async function handleUpload(event) {
-    console.log(event.target.files[0]);
+   
     const imgurl = await ImgtoBase64(event.target.files[0]);
 
-    console.log(imgurl);
+   
+
    
     setValue((prevValue) => {
       return {
+        ...prevValue,
         image: imgurl,
       };
     });
-    console.log(imgValue, "update image");
+   
   }
+  
+
 
   function handleCertiUpdate(value) {
     const certiData = {
@@ -204,7 +221,7 @@ function User(props) {
       ],
     };
 
-    console.log(certiData);
+   
     axios
       .patch(process.env.REACT_APP_SERVER_DOMAIN + "/profileData", certiData, {
         headers: {
@@ -212,7 +229,7 @@ function User(props) {
         },
       })
       .then((response) => {
-        console.log(response.data);
+      
         if (response.data.alert) {
           toast(response.data.message);
           dispatch(AddcertiRedux(value));
@@ -241,7 +258,7 @@ function User(props) {
         },
       })
       .then((response) => {
-        console.log(response.data);
+       
         if (response.data.alert) {
           toast(response.data.message);
           setEdit(false);
@@ -273,7 +290,7 @@ function User(props) {
         }
       )
       .then((response) => {
-        console.log(response.data);
+       
         if (response.data.alert) {
           toast(response.data.message);
           setEdit(false);
@@ -285,7 +302,7 @@ function User(props) {
       });
   }
   function handleExpUpdate(value) {
-    console.log(value);
+   
     const expData = {
       _id: data[0]._id,
       experience: [...data[0].experience, value],
@@ -298,7 +315,7 @@ function User(props) {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        
         if (response.data.alert) {
           toast(response.data.message);
           dispatch(AddexpRedux(value));
@@ -324,7 +341,7 @@ function User(props) {
         },
       })
       .then((response) => {
-        console.log(response.data);
+     
         if (response.data.alert) {
           toast(response.data.message);
           dispatch(AddeduRedux(value));
@@ -353,7 +370,7 @@ function User(props) {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        
         if (response.data.alert) {
           toast(response.data.message);
           setEdit(false);
@@ -381,7 +398,7 @@ function User(props) {
         },
       })
       .then((response) => {
-        console.log(response.data);
+      
         if (response.data.alert) {
           toast(response.data.message);
           setEdit(false);
@@ -408,7 +425,7 @@ function User(props) {
         },
       })
       .then((response) => {
-        console.log(response.data);
+       
         if (response.data.alert) {
           toast(response.data.message);
           setEdit(false);
@@ -436,7 +453,7 @@ function User(props) {
         },
       })
       .then((response) => {
-        console.log(response.data);
+       
         if (response.data.alert) {
           toast(response.data.message);
           setEdit(false);
@@ -467,7 +484,7 @@ function User(props) {
         }
       )
       .then((response) => {
-        console.log(response.data);
+     
         if (response.data.alert) {
           toast(response.data.message);
           setEdit(false);
@@ -486,7 +503,7 @@ function User(props) {
 
   return (
     <>
-      <div className=" flex md:flex-row flex-col justify-center items-center p-3 gap-14 bg-white border-[2px] rounded-lg border-[#EBEBEE] absolute  md:w-[70%] w-[90%] md:top-80 top-40 md:right-[9%] ">
+      <div className=" flex md:flex-row flex-col justify-start items-start p-3 gap-14 bg-white border-[2px] rounded-lg border-[#EBEBEE] absolute  md:w-[70%] w-[90%] md:top-80 top-40 md:right-[9%] ">
         <div className="md:w-1/2 w-full h-full flex flex-col justify-start gap-6  items-start">
           <div className="flex justify-between items-center ">
             <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden">
@@ -897,23 +914,23 @@ function User(props) {
                           )}
                         </div>
 
-                        <p className="w-1/2 text-[#222222E5] font-medium font-body text-sm md:text-lg">
-                          {post.title.charAt(0).toUpperCase() +
-                            post.title.slice(1)}
+                        <p className="w-1/2 text-[#222222E5] text-right font-medium font-body text-sm md:text-lg">
+                          {post.type.charAt(0).toUpperCase() +
+                            post.type.slice(1)}
                         </p>
                       </div>
                       <div className="flex justify-betweem  items-center gap-4 w-full">
                         <p className="text-[#49454FCC] font-normal text-base md:text-xl">
                           {post.cName}
                         </p>
-                        <p className="text-[#49454FCC] font-normal text-sm md:text-lg">
+                        <p className="text-[#49454FCC] font-normal text-right w-full text-sm md:text-lg">
                           --{" "}
                           {post.title.charAt(0).toUpperCase() +
                             post.title.slice(1)}
                         </p>
                       </div>
                     </div>
-                    <img src={logo} className="md:w-24 w-12 "></img>
+                    {/* <img src={logo} className="md:w-24 w-12 "></img> */}
                   </div>
                   {edit === "exp" && (
                     <div className="flex flex-col md:flex-row justify-end gap-3 pl-2 md:p-0 md:mr-3 items-end md:items-start md:w-1/4 ">

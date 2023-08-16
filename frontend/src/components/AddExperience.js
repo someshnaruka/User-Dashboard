@@ -27,15 +27,13 @@ function AddExperience(props) {
   function handledata() {
     const a = new Date(newExp.startDate)
     const b = new Date(newExp.endDate)
-    console.log(a);
-    console.log(b);
+   
     const _MS_PER_DAY = 1000 * 60 * 60 * 24;
   // Discard the time and time-zone information.
   var diffDays = parseInt((b - a) / (24 * 3600 * 1000)); 
    const months=Math.floor(diffDays/30);
    const years=Math.floor(months/12);
-   console.log(months);
-   console.log(years);
+
 newExp.month=months;
 newExp.year=years;
 if(props.check)
@@ -57,7 +55,7 @@ else{
         [name]: value,
       };
     });
-    console.log(newExp);
+
   }
   return (
     <>
@@ -73,6 +71,7 @@ else{
             <input
               type="text"
               name="cName"
+              required
               value={newExp.cName}
               className="text-black  md:w-3/4 w-full p-2 rounded-md"
               onChange={handleChange}
@@ -83,6 +82,7 @@ else{
             <input
               type="text"
               name="title"
+              required
               value={newExp.title}
               className="text-black md:w-3/4 w-full p-2 rounded-md"
               onChange={handleChange}
@@ -93,6 +93,7 @@ else{
             <input
               type="text"
               name="type"
+              required
               value={newExp.type}
               placeholder=""
               className="text-black md:w-3/4 w-full p-2 rounded-md"
@@ -107,6 +108,7 @@ else{
                 <input
                   type="date"
                   name="startDate"
+                  required
                   value={newExp.startDate}
                   placeholder=""
                   className="text-black  w-full p-2 rounded-md"
@@ -121,6 +123,7 @@ else{
                 <input
                   type="date"
                   name="endDate"
+                  required
                   value={newExp.endDate}
                   placeholder=""
                   className="text-black  w-full p-2 rounded-md"

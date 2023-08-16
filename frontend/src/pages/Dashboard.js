@@ -8,7 +8,7 @@ import { redirect, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRedux } from "../features/userSlice";
 
-import { Audio } from 'react-loader-spinner'
+import { RotatingLines } from 'react-loader-spinner'
 
 
 
@@ -23,7 +23,7 @@ function Dashboard() {
   useEffect(() => {
     const token = localStorage.getItem("dashboardToken");
     if (token) {
-      console.log(token, "from localstorage");
+    
       axios
         .get(process.env.REACT_APP_SERVER_DOMAIN + "/dashboard", {
           headers: {
@@ -31,7 +31,7 @@ function Dashboard() {
           },
         })
         .then((response) => {
-            console.log(response.data,"data from backnend");
+          
           dispatch(loginRedux(response.data.result[0]));
           setData(response.data.result[0])
           setLoading(false);
@@ -41,21 +41,22 @@ function Dashboard() {
       navigate("/login");
     }
   }, []);
-  console.log(userData, "user data value");
+
   const data = useSelector((state) => state.user.userList);
-  console.log(data, "redux store data");
+
   return (
     <>
     {
-        (isLoading) ?<Audio className="loadingContainer"
-  height="80"
-  width="80"
-  color="#4fa94d"
-  ariaLabel="bars-loading"
-  wrapperStyle={{}}
-  wrapperClass=""
+        (isLoading) ?
+        <div className="w-full h-screen flex justify-center items-center bg-hero_Blue">
+        <RotatingLines
+  strokeColor="#1E2875"
+  strokeWidth="5"
+  animationDuration="0.75"
+  width="150"
   visible={true}
-></Audio>
+></RotatingLines>
+</div>
 :<div className="flex flex-col justify-between items-center h-full relative bg-[#FAFBFF]">
         <Header></Header>
         <DashboardBar></DashboardBar>

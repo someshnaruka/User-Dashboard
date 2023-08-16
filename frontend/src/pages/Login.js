@@ -19,7 +19,7 @@ function Login() {
         [name]: value,
       };
     });
-    console.log(data);
+
   }
 
   function handleSubmit(event) {
@@ -27,7 +27,7 @@ function Login() {
     axios
       .post(process.env.REACT_APP_SERVER_DOMAIN + "/login", data)
       .then((response) => {
-        console.log(response.data);
+     
         if (response.data.alert) {
             localStorage.setItem("dashboardToken",response.data.result);
           setData({

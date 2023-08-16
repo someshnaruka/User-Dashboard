@@ -47,11 +47,10 @@ const userSchema = new mongoose.Schema({
   phone: String,
   bio: String,
   password: String,
-  skills:Array,
-  certification:Array,
-  experience:Array,
-  education:Array,
-  
+  skills: Array,
+  certification: Array,
+  experience: Array,
+  education: Array,
 });
 
 const User = mongoose.model("User", userSchema);
@@ -60,12 +59,12 @@ const connectionSchema = new mongoose.Schema(
   {
     username: String,
     connection: Array,
-    removed:Array
+    removed: Array,
   },
   { collection: "connection" }
-)
+);
 
-  const Connection=mongoose.model("Connection",connectionSchema);
+const Connection = mongoose.model("Connection", connectionSchema);
 
 //redis connection
 // let redisClient;
@@ -83,18 +82,20 @@ const connectionSchema = new mongoose.Schema(
 //   await redisClient.connect();
 // })();
 
-app.get("/",(req,res)=>{
-  res.send("Server is running")
-})
-app.get("/connection",verifyToken,(req,res)=>{
-  Connection.find().then((data)=>{
-    res.send({result:data,alert:true});
-  }).catch((err)=>{
-    console.log(err);
-  })
+app.get("/", (req, res) => {
+  res.send("Server is running");
+});
+app.get("/connection", verifyToken, (req, res) => {
+  Connection.find()
+    .then((data) => {
+      res.send({ result: data, alert: true });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
-app.get("/dashboard", verifyToken,(req, res) => {
+app.get("/dashboard", verifyToken, (req, res) => {
   // redisClient.get("dashboardUser").then((data) => {
   //   if (data) {
   //     res.send({ alert: true, result: JSON.parse(data), message: "user data" });
@@ -102,153 +103,209 @@ app.get("/dashboard", verifyToken,(req, res) => {
   //   }
   // });
   const token = req.headers["authorization"];
-  const decode =jwt.decode(token)
+  const decode = jwt.decode(token);
 
-User.find({username:decode.username}).then((data)=>{
-  res.send({result:data})
-}).catch((err)=>{
-  console.log(err);
-})
-  
+  User.find({ username: decode.username })
+    .then((data) => {
+      res.send({ result: data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 function verifyToken(req, res, next) {
   const token = req.headers["authorization"];
-  if(token)
-  {
-    jwt.verify(token,jwtkey,(err,valid)=>{
-if(err)
-{
-  res.send("Session Expired login Again")
-}
-else{
-  next();
-}
-    })
+  if (token) {
+    jwt.verify(token, jwtkey, (err, valid) => {
+      if (err) {
+        res.send("Session Expired login Again");
+      } else {
+        next();
+      }
+    });
+  } else {
+    res.send("Add token with header");
   }
-  else{
-    res.send("Add token with header")
-  }
+}
+
+app.patch("/editEduData", verifyToken, (req, res) => {
+  const field = req.body.field;
+  const updates = req.body.education;
+
+  User.updateOne(
+    { _id: req.body._id, "education.id": req.body.education.id },
+    { $set: { "education.$": updates } }
+  ).then((response) => {
+    res.send({ message: "Profile Updated", alert: true });
+  });
+});
+
+app.patch("/deleteEduData", verifyToken, (req, res) => {
+  const field = req.body.field;
+  const updates = req.body.education;
   
-}
+  User.updateOne({ _id: req.body._id }, { $pull: { education: updates } }).then(
+    (response) => {
+      res.send({ message: "Profile Updated", alert: true });
+    }
+  );
+});
 
-
-app.patch("/editEduData",verifyToken,(req,res)=>{
-  const field=req.body.field;
-    const updates=req.body.education
-    ;
-  console.log(updates);
-  User.updateOne({_id:req.body._id,"education.id":req.body.education.id},{$set:{"education.$":updates}}).then((response)=>{
-    res.send({message:"Profile Updated",alert:true})
-   })
-  });
+app.patch("/deleteskillData", verifyToken, (req, res) => {
+  const field = req.body.field;
+  const updates = req.body.skills;
  
+  User.updateOne({ _id: req.body._id }, { $pull: { skills: updates } }).then(
+    (response) => {
+      res.send({ message: "Profile Updated", alert: true });
+    }
+  );
+});
 
-  app.patch("/deleteEduData",verifyToken,(req,res)=>{
-    const field=req.body.field;
-      const updates=req.body.education;
-    console.log(updates);
-    User.updateOne({_id:req.body._id},{$pull:{education:updates}}).then((response)=>{
-      res.send({message:"Profile Updated",alert:true})
-     })
-    });
+app.patch("/editExpData", verifyToken, (req, res) => {
+  const field = req.body.field;
+  const updates = req.body.experience;
 
-    app.patch("/deleteskillData",verifyToken,(req,res)=>{
-      const field=req.body.field;
-        const updates=req.body.skills;
-      console.log(updates);
-      User.updateOne({_id:req.body._id},{$pull:{skills:updates}}).then((response)=>{
-        res.send({message:"Profile Updated",alert:true})
-       })
-      });
-    
-
-app.patch("/editExpData",verifyToken,(req,res)=>{
-  const field=req.body.field;
-    const updates=req.body.experience;
-  console.log(updates);
-  User.updateOne({_id:req.body._id,"experience.id":req.body.experience.id},{$set:{"experience.$":updates}}).then((response)=>{
-    res.send({message:"Profile Updated",alert:true})
-   })
+  User.updateOne(
+    { _id: req.body._id, "experience.id": req.body.experience.id },
+    { $set: { "experience.$": updates } }
+  ).then((response) => {
+    res.send({ message: "Profile Updated", alert: true });
   });
+});
+
+app.patch("/deleteExpData", verifyToken, (req, res) => {
+  const field = req.body.field;
+  const updates = req.body.experience;
+ 
+  User.updateOne(
+    { _id: req.body._id },
+    { $pull: { experience: updates } }
+  ).then((response) => {
+    res.send({ message: "Profile Updated", alert: true });
+  });
+});
+app.patch("/deleteCertiData", verifyToken, (req, res) => {
+  const field = req.body.field;
+  const updates = req.body.certification;
+  
+  User.updateOne(
+    { _id: req.body._id },
+    { $pull: { certification: updates } }
+  ).then((response) => {
+    res.send({ message: "Profile Updated", alert: true });
+  });
+});
+
+app.patch("/editCertiData", verifyToken, (req, res) => {
+  const field = req.body.field;
+  const updates = req.body.certification;
+
+  User.updateOne(
+    { _id: req.body._id, "certification.id": req.body.certification.id },
+    { $set: { "certification.$": updates } }
+  ).then((response) => {
+    res.send({ message: "Profile Updated", alert: true });
+  });
+});
+
+app.patch("/connectionDelete", verifyToken, (req, res) => {
+  const updates = req.body.user;
+  
+  Connection.updateOne(
+    { _id: req.body._id },
+    { $pull: { connection: updates } }
+  )
+    .then(() => {
+      Connection.updateOne(
+        { _id: req.body._id },
+        { $push: { removed: updates } }
+      )
+        .then(() => {
+          res.send({ message: "Connection Removed", alert: true });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.patch("/connectionData", verifyToken, (req, res) => {
+  const updates = req.body.user;
+ 
+  Connection.updateOne(
+    { _id: req.body._id },
+    { $push: { connection: updates } }
+  )
+    .then(() => {
+      Connection.updateOne(
+        { _id: req.body._id },
+        { $pull: { removed: updates } }
+      )
+        .then(() => {
+          res.send({ message: "Connection Added", alert: true });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.patch("/profileData", verifyToken, (req, res) => {
+  const updates = req.body;
+ 
+  User.updateOne({ _id: req.body._id }, { $set: updates }).then((response) => {
+    res.send({ message: "Profile Updated", alert: true });
+  });
+});
+
+app.patch("/profileImg", verifyToken, (req, res) => {
+  const updates = req.body;
+  const img = req.body.image;
+  cloudinary.uploader
+    .upload(img, {
+      public_id: "dashboardUser",
+      overwrite: true,
+      faces: true,
+      folder: "dashboardUser",
+    })
+    .then((result) => {
+      User.updateOne({ _id: req.body._id }, { $set: { image: result.url } })
+        .then((response) => {
+          User.findOne({ _id: req.body._id}).then((result) => {
+          
+            res.send({
+              message: "Profile Updated",
+              alert: true,
+              result: result,
+            });
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
  
-  app.patch("/deleteExpData",verifyToken,(req,res)=>{
-    const field=req.body.field;
-      const updates=req.body.experience;
-    console.log(updates);
-    User.updateOne({_id:req.body._id},{$pull:{experience:updates}}).then((response)=>{
-      res.send({message:"Profile Updated",alert:true})
-     })
-    });
-app.patch("/deleteCertiData",verifyToken,(req,res)=>{
-  const field=req.body.field;
-    const updates=req.body.certification;
-  console.log(updates);
-  User.updateOne({_id:req.body._id},{$pull:{certification:updates}}).then((response)=>{
-    res.send({message:"Profile Updated",alert:true})
-   })
-  })
+});
 
-app.patch("/editCertiData",verifyToken,(req,res)=>{
-  const field=req.body.field;
-    const updates=req.body.certification;
-  console.log(updates);
-  User.updateOne({_id:req.body._id,"certification.id":req.body.certification.id},{$set:{"certification.$":updates}}).then((response)=>{
-    res.send({message:"Profile Updated",alert:true})
-   })
-     
-    
-  });
-
-
-app.patch("/connectionDelete",verifyToken,(req,res)=>{
-      const updates=req.body.user;
-    console.log(updates);
-    Connection.updateOne({_id:req.body._id},{$pull:{connection:updates}}).then(()=>{
-
-      Connection.updateOne({_id:req.body._id},{$push:{removed:updates}}).then(()=>{
-        res.send({message:"Connection Removed",alert:true})
-      }).catch((err)=>{
-        console.log(err);
-       })
-     }).catch((err)=>{
-      console.log(err);
-     })
-    });
-
-    app.patch("/connectionData",verifyToken,(req,res)=>{
-      const updates=req.body.user;
-    console.log(updates);
-    Connection.updateOne({_id:req.body._id},{$push:{connection:updates}}).then(()=>{
-
-      Connection.updateOne({_id:req.body._id},{$pull:{removed:updates}}).then(()=>{
-        res.send({message:"Connection Added",alert:true})
-      }).catch((err)=>{
-        console.log(err);
-       })
-     }).catch((err)=>{
-      console.log(err);
-     })
-    });
-
-app.patch("/profileData",verifyToken,(req,res)=>{
-
-  const updates=req.body;
-  console.log(req.body);
- User.updateOne({_id:req.body._id},{$set:updates}).then((response)=>{
-  res.send({message:"Profile Updated",alert:true})
- })
-   
-
-})
 app.post("/register", (req, res) => {
-  console.log(req.body);
-  const { image, email, password,firstname,lastname } = req.body;
+
+  const { image, email, password, firstname, lastname } = req.body;
   const strfirst = firstname;
-const firstNamecapital = strfirst.charAt(0);
-const strlast = lastname;
-const lastNamecapital = strlast.charAt(0);
+  const firstNamecapital = strfirst.charAt(0);
+  const strlast = lastname;
+  const lastNamecapital = strlast.charAt(0);
 
   User.findOne({ username: email }).then((data) => {
     if (data == null) {
@@ -260,7 +317,7 @@ const lastNamecapital = strlast.charAt(0);
           folder: "dashboardUser",
         })
         .then((result) => {
-          console.log(result);
+         
           const hash = bcrypt.hashSync(password, saltRounds);
           const newUser = new User({
             firstname: firstNamecapital,
@@ -300,14 +357,14 @@ app.post("/login", (req, res) => {
             image: data.image,
           };
           const token = jwt.sign(dataSend, jwtkey);
-          console.log(token);
+         
           res.send({
             message: "Logged In successfully",
             alert: true,
             result: token,
           });
 
-          //   
+          //
         } else {
           res.send({ message: "password does not match" });
         }

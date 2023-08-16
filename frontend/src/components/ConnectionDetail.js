@@ -10,7 +10,8 @@ function ConnectionDetail() {
   const data = useSelector((state) => state.user.connectionList);
   const token = localStorage.getItem("dashboardToken");
   const dispatch=useDispatch();
-  console.log(data[0].connection);
+
+
 
   function handleAdd(value) {
     const info = {
@@ -29,7 +30,7 @@ function ConnectionDetail() {
       }
     )
     .then((response) => {
-      console.log(response.data);
+ 
       if (response.data.alert) {
         toast(response.data.message);
 dispatch(AddRedux(value));
@@ -59,7 +60,7 @@ dispatch(RemoveRedux(value));
         }
       )
       .then((response) => {
-        console.log(response.data);
+      
         if (response.data.alert) {
         dispatch(ConnRemoveRedux(value));
         dispatch(ConnAddRedux(value));
