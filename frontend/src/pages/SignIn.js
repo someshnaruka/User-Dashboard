@@ -78,7 +78,9 @@ else{
             ...prevValue,
             [name]:value
         }
+        
     })
+    console.log(data);
   
 
   }

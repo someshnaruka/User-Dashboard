@@ -302,10 +302,6 @@ app.patch("/profileImg", verifyToken, (req, res) => {
 app.post("/register", (req, res) => {
 
   const { image, email, password, firstname, lastname } = req.body;
-  const strfirst = firstname;
-  const firstNamecapital = strfirst.charAt(0);
-  const strlast = lastname;
-  const lastNamecapital = strlast.charAt(0);
 
   User.findOne({ username: email }).then((data) => {
     if (data == null) {
@@ -320,8 +316,8 @@ app.post("/register", (req, res) => {
          
           const hash = bcrypt.hashSync(password, saltRounds);
           const newUser = new User({
-            firstname: firstNamecapital,
-            lastname: lastNamecapital,
+            firstname: firstname,
+            lastname:lastname,
             username: email,
             phone: req.body.phone,
             bio: req.body.bio,
@@ -329,7 +325,7 @@ app.post("/register", (req, res) => {
             image: result.url,
           });
           newUser.save().then(() => {
-            res.send({ message: "Succefully Sign Up", alert: true });
+            res.send({ message: "Successfully Signed Up", alert: true });
           });
         });
     } else {
