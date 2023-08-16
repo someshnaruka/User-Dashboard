@@ -13,6 +13,7 @@ function Connection() {
     
 
     const [isLoading, setLoading] = useState(true);
+    const [connection,setconnection]=useState(true)
     const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userData, setData] = useState([]);
@@ -30,7 +31,7 @@ function Connection() {
             console.log(response.data,"data from backnend");
           dispatch(loginRedux(response.data.result[0]));
           setData(response.data.result[0])
-          setLoading(false);
+        
        
         });
     } else {
@@ -48,7 +49,7 @@ function Connection() {
           },
         })
         .then((response) => {
-            console.log(response.data,"data from backnend");
+            console.log(response.data,"Connection data from backnend");
           dispatch(connectionRedux(response.data.result[0]));
           setData(response.data.result[0])
           setLoading(false);
@@ -64,7 +65,7 @@ function Connection() {
   return (
    <>
     {
-        (isLoading) ?<Audio className="loadingContainer"
+        (isLoading)  ?<Audio className="loadingContainer"
   height="80"
   width="80"
   color="#4fa94d"
