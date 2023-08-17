@@ -1,4 +1,4 @@
-#  User Profile Management Dashboard using MERN Stack
+User Profile Management Dashboard using MERN Stack
 A dynamic web application designed to facilitate efficient management of user profiles, including profile information, skills, experiences, education, and certifications. The project is built using the MERN stack (MongoDB, Express.js, React, and Node.js), incorporating various modern technologies to enhance user experience and functionality.
 test-user email- vishnu@oruphones.com
 test-user password-123
