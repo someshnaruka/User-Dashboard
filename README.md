@@ -1,6 +1,5 @@
-# User-Dashboard
-A user Profile dashboard project built using the MERN (MongoDB, Express.js, React, Node.js) stack. This project offers a dynamic and user-friendly interface that enables users to effortlessly add, edit, and delete their profile information.
-
+#  User Profile Management Dashboard using MERN Stack
+A dynamic web application designed to facilitate efficient management of user profiles, including profile information, skills, experiences, education, and certifications. The project is built using the MERN stack (MongoDB, Express.js, React, and Node.js), incorporating various modern technologies to enhance user experience and functionality.
 test-user email- vishnu@oruphones.com
 test-user password-123
 On start Application checks for user token in localstorage, if found then directly loads the profile dashboard else redirects to login page.
