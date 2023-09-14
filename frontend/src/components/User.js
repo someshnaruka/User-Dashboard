@@ -75,6 +75,7 @@ function User(props) {
   }, [imgValue]);
 
   function handlePhoto() {
+
     axios
       .patch(process.env.REACT_APP_SERVER_DOMAIN + "/profileImg", imgValue, {
         headers: {
@@ -188,15 +189,25 @@ function User(props) {
   function handleEdit(value) {
     setEdit(value);
   }
+
+
   async function handleUpload(event) {
-    const imgurl = await ImgtoBase64(event.target.files[0]);
-    setValue((prevValue) => {
-      return {
-        ...prevValue,
-        image: imgurl,
-      };
-    });
-    setLoading(true);
+    const imgurl = event.target.files[0];
+    const formData = new FormData ();
+    formData.append("file", imgurl);
+    formData.append("upload_preset", process.env.REACT_APP_UPLOAD_PRESET);
+    axios.post("https://api.cloudinary.com/v1_1/"+process.env.REACT_APP_CLOUD_NAME+"/upload",formData).then((response)=>{
+      setValue((prevValue) => {
+        return {
+          ...prevValue,
+          image: response.data.url,
+        };
+      });
+      setLoading(true);
+    }).catch((err)=>{
+      console.log(err);
+    })
+    
     
   }
  

@@ -269,15 +269,7 @@ app.patch("/profileData", verifyToken, (req, res) => {
 app.patch("/profileImg", verifyToken, (req, res) => {
   const updates = req.body;
   const img = req.body.image;
-  cloudinary.uploader
-    .upload(img, {
-      public_id: "dashboardUser",
-      overwrite: true,
-      faces: true,
-      folder: "dashboardUser",
-    })
-    .then((result) => {
-      User.updateOne({ _id: req.body._id }, { $set: { image: result.url } })
+  User.updateOne({ _id: req.body._id }, { $set: { image: img } })
         .then((response) => {
           User.findOne({ _id: req.body._id}).then((result) => {
           
@@ -291,10 +283,19 @@ app.patch("/profileImg", verifyToken, (req, res) => {
         .catch((err) => {
           console.log(err);
         });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  // cloudinary.uploader
+  //   .upload(img, {
+  //     public_id: "dashboardUser",
+  //     overwrite: true,
+  //     faces: true,
+  //     folder: "dashboardUser",
+  //   })
+  //   .then((result) => {
+      
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
 
  
 });
