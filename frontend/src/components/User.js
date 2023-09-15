@@ -79,7 +79,7 @@ function User(props) {
   }, [imgValue]);
 
   function handlePhoto() {
-console.log(imgValue,"image data");
+
     axios
       .patch(process.env.REACT_APP_SERVER_DOMAIN + "/profileImg", imgValue, {
         headers: {
@@ -202,7 +202,7 @@ console.log(imgValue,"image data");
     formData.append("file", imgurl);
     formData.append("upload_preset", process.env.REACT_APP_UPLOAD_PRESET);
     axios.post("https://api.cloudinary.com/v1_1/"+process.env.REACT_APP_CLOUD_NAME+"/upload",formData).then((response)=>{
-      console.log(response.data.url,"img url");
+ 
       setValue((prevValue) => {
         return {
           ...prevValue,
