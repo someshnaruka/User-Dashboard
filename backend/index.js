@@ -144,7 +144,7 @@ app.patch("/editEduData", verifyToken, (req, res) => {
 app.patch("/deleteEduData", verifyToken, (req, res) => {
   const field = req.body.field;
   const updates = req.body.education;
-  
+
   User.updateOne({ _id: req.body._id }, { $pull: { education: updates } }).then(
     (response) => {
       res.send({ message: "Profile Updated", alert: true });
@@ -155,7 +155,7 @@ app.patch("/deleteEduData", verifyToken, (req, res) => {
 app.patch("/deleteskillData", verifyToken, (req, res) => {
   const field = req.body.field;
   const updates = req.body.skills;
- 
+
   User.updateOne({ _id: req.body._id }, { $pull: { skills: updates } }).then(
     (response) => {
       res.send({ message: "Profile Updated", alert: true });
@@ -178,7 +178,7 @@ app.patch("/editExpData", verifyToken, (req, res) => {
 app.patch("/deleteExpData", verifyToken, (req, res) => {
   const field = req.body.field;
   const updates = req.body.experience;
- 
+
   User.updateOne(
     { _id: req.body._id },
     { $pull: { experience: updates } }
@@ -189,7 +189,7 @@ app.patch("/deleteExpData", verifyToken, (req, res) => {
 app.patch("/deleteCertiData", verifyToken, (req, res) => {
   const field = req.body.field;
   const updates = req.body.certification;
-  
+
   User.updateOne(
     { _id: req.body._id },
     { $pull: { certification: updates } }
@@ -212,7 +212,7 @@ app.patch("/editCertiData", verifyToken, (req, res) => {
 
 app.patch("/connectionDelete", verifyToken, (req, res) => {
   const updates = req.body.user;
-  
+
   Connection.updateOne(
     { _id: req.body._id },
     { $pull: { connection: updates } }
@@ -236,7 +236,7 @@ app.patch("/connectionDelete", verifyToken, (req, res) => {
 
 app.patch("/connectionData", verifyToken, (req, res) => {
   const updates = req.body.user;
- 
+
   Connection.updateOne(
     { _id: req.body._id },
     { $push: { connection: updates } }
@@ -260,29 +260,29 @@ app.patch("/connectionData", verifyToken, (req, res) => {
 
 app.patch("/profileData", verifyToken, (req, res) => {
   const updates = req.body;
- 
+
   User.updateOne({ _id: req.body._id }, { $set: updates }).then((response) => {
     res.send({ message: "Profile Updated", alert: true });
   });
 });
 
 app.patch("/profileImg", verifyToken, (req, res) => {
+  console.log(req.body);
   const updates = req.body;
   const img = req.body.image;
   User.updateOne({ _id: req.body._id }, { $set: { image: img } })
-        .then((response) => {
-          User.findOne({ _id: req.body._id}).then((result) => {
-          
-            res.send({
-              message: "Profile Updated",
-              alert: true,
-              result: result,
-            });
-          });
-        })
-        .catch((err) => {
-          console.log(err);
+    .then((response) => {
+      User.findOne({ _id: req.body._id }).then((result) => {
+        res.send({
+          message: "Profile Updated",
+          alert: true,
+          result: result,
         });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   // cloudinary.uploader
   //   .upload(img, {
   //     public_id: "dashboardUser",
@@ -291,48 +291,45 @@ app.patch("/profileImg", verifyToken, (req, res) => {
   //     folder: "dashboardUser",
   //   })
   //   .then((result) => {
-      
+
   //   })
   //   .catch((err) => {
   //     console.log(err);
   //   });
-
- 
 });
 
 app.post("/register", (req, res) => {
-
   const { image, email, password, firstname, lastname } = req.body;
 
   User.findOne({ username: email }).then((data) => {
     if (data == null) {
-      cloudinary.uploader
-        .upload(image, {
-          public_id: "dashboardUser",
-          overwrite: true,
-          faces: true,
-          folder: "dashboardUser",
-        })
-        .then((result) => {
-         
-          const hash = bcrypt.hashSync(password, saltRounds);
-          const newUser = new User({
-            firstname: firstname,
-            lastname:lastname,
-            username: email,
-            phone: req.body.phone,
-            bio: req.body.bio,
-            password: hash,
-            image: result.url,
-          });
-          newUser.save().then(() => {
-            res.send({ message: "Successfully Signed Up", alert: true });
-          });
-        });
-    } else {
+      const hash = bcrypt.hashSync(password, saltRounds);
+      const newUser = new User({
+        firstname: firstname,
+        lastname: lastname,
+        username: email,
+        phone: req.body.phone,
+        bio: req.body.bio,
+        password: hash,
+        image: image,
+      });
+      newUser.save().then(() => {
+        res.send({ message: "Successfully Signed Up", alert: true });
+       
+      });
+    } 
+    else {
       res.send({ message: "User Alredy exits", alert: false });
     }
   });
+  // cloudinary.uploader
+  // .upload(image, {
+  //   public_id: "dashboardUser",
+  //   overwrite: true,
+  //   faces: true,
+  //   folder: "dashboardUser",
+  // })
+  // .then((result) => {});
 });
 
 app.post("/login", (req, res) => {
@@ -354,7 +351,7 @@ app.post("/login", (req, res) => {
             image: data.image,
           };
           const token = jwt.sign(dataSend, jwtkey);
-         
+
           res.send({
             message: "Logged In successfully",
             alert: true,

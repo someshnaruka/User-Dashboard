@@ -39,7 +39,7 @@ function User(props) {
   const [isLoading, setLoading] = useState(false);
   const [imgValue, setValue] = useState({
     _id: data[0]._id,
-    image: "",
+    image: null,
   });
   const [add, setAdd] = useState(false);
   const [newskill, setNewskill] = useState("");
@@ -71,11 +71,15 @@ function User(props) {
   const token = localStorage.getItem("dashboardToken");
 
   useEffect(() => {
-    handlePhoto();
+    if(imgValue.image!=null)
+    {
+      handlePhoto();
+    }
+   
   }, [imgValue]);
 
   function handlePhoto() {
-
+console.log(imgValue,"image data");
     axios
       .patch(process.env.REACT_APP_SERVER_DOMAIN + "/profileImg", imgValue, {
         headers: {
@@ -192,18 +196,20 @@ function User(props) {
 
 
   async function handleUpload(event) {
+    setLoading(true);
     const imgurl = event.target.files[0];
     const formData = new FormData ();
     formData.append("file", imgurl);
     formData.append("upload_preset", process.env.REACT_APP_UPLOAD_PRESET);
     axios.post("https://api.cloudinary.com/v1_1/"+process.env.REACT_APP_CLOUD_NAME+"/upload",formData).then((response)=>{
+      console.log(response.data.url,"img url");
       setValue((prevValue) => {
         return {
           ...prevValue,
           image: response.data.url,
         };
       });
-      setLoading(true);
+      
     }).catch((err)=>{
       console.log(err);
     })
