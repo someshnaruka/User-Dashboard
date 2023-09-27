@@ -834,6 +834,7 @@ function User(props) {
                         onClick={(event) => {
                           setAdd("editcerti");
                           handleEditData(post);
+                          document.body.style.overflowY = "hidden";
                         }}
                       ></FiEdit>
                       <RiDeleteBinLine
@@ -957,6 +958,7 @@ function User(props) {
                         onClick={(event) => {
                           setAdd("editexp");
                           handleEditData(post);
+                          document.body.style.overflowY = "hidden";
                         }}
                       ></FiEdit>
                       <RiDeleteBinLine
@@ -1040,6 +1042,7 @@ function User(props) {
                             onClick={(event) => {
                               setAdd("editedu");
                               handleEditData(post);
+                              document.body.style.overflowY = "hidden";
                             }}
                           ></FiEdit>
                           <RiDeleteBinLine
